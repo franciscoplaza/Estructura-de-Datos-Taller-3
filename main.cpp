@@ -40,12 +40,28 @@ void leerArchivoTransacciones(string nombre_archivo, Nodo* raiz_avl){
                     break;
                 case 6:
                     hora = parte;
-                    cout<<hora<<endl;
+                    //cout<<hora<<endl;
                     break;
             }
             iterador++;
         }
 
+    }
+}
+
+void insertarNodoAvl(Nodo* raiz_avl, Transaccion* transaccion){
+    if (raiz_avl == nullptr){
+        raiz_avl->setDato(transaccion);
+        return;
+    }
+    Transaccion* transaccion_actual = raiz_avl->getDato();
+    int id_actual = transaccion_actual->getId();
+    int id = transaccion->getId();
+
+    if(id < id_actual){
+        insertarNodoAvl(raiz_avl->getHijoIzq(), transaccion);
+    } else if (id > id_actual){
+        insertarNodoAvl(raiz_avl->getHijoDer(), transaccion);
     }
 }
 
