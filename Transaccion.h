@@ -9,9 +9,11 @@ class Transaccion{
         string cuenta_destino;
         int monto;
         string ubicacion;
+        string fecha;
+        string hora;
 
     public:
-        Transaccion(int id, string cuenta_origen, string cuenta_destino, int monto, string ubicacion);
+        Transaccion(int id, string cuenta_origen, string cuenta_destino, int monto, string ubicacion, string fecha, string hora);
         int getId();
         void setId(int id);
         string getCuentaOrigen();
@@ -22,5 +24,9 @@ class Transaccion{
         void setMonto(int monto);
         string getUbicacion();
         void setUbicacion(string ubicacion);
+        string getFecha();
+        void setFecha(string fecha);
+        string getHora();
+        void setHora(string hora);
         ~Transaccion();
 };

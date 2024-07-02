@@ -1,18 +1,19 @@
 #include <iostream>
 #include "Nodo.h"
+#include "Transaccion.h"
 using namespace std;
 
-Nodo::Nodo(int dato){
+Nodo::Nodo(Transaccion* dato){
     this->dato = dato;
     this->hijoIzq = nullptr;
     this->hijoDer = nullptr;
 }
 
-int Nodo::getDato(){
+Transaccion* Nodo::getDato(){
     return dato;
 }
 
-void Nodo::setDato(int dato){
+void Nodo::setDato(Transaccion* dato){
     this->dato = dato;
 }
 

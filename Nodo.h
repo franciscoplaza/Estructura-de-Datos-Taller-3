@@ -1,17 +1,18 @@
 #pragma once
 #include <iostream>
+#include "Transaccion.h"
 using namespace std;
 
 class Nodo{
     private:
-        int dato;
+        Transaccion* dato;
         Nodo* hijoIzq;
         Nodo* hijoDer;
 
     public:
-        Nodo(int dato);
-        int getDato();
-        void setDato(int dato);
+        Nodo(Transaccion* dato);
+        Transaccion* getDato();
+        void setDato(Transaccion* dato);
         Nodo* getHijoIzq();
         void setHijoIzq(Nodo* hijoIzq);
         Nodo* getHijoDer();
