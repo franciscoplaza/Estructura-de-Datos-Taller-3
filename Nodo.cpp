@@ -17,7 +17,7 @@ void Nodo::setDato(Transaccion* dato){
     this->dato = dato;
 }
 
-Nodo* Nodo::getHijoIzq(){
+Nodo*& Nodo::getHijoIzq(){
     return hijoIzq;
 }
 
@@ -25,7 +25,7 @@ void Nodo::setHijoIzq(Nodo* hijoIzq){
     this->hijoIzq = hijoIzq;
 }
 
-Nodo* Nodo::getHijoDer(){
+Nodo*& Nodo::getHijoDer(){
     return hijoDer;
 }
 

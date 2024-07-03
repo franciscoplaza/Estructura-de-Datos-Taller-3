@@ -13,9 +13,9 @@ class Nodo{
         Nodo(Transaccion* dato);
         Transaccion* getDato();
         void setDato(Transaccion* dato);
-        Nodo* getHijoIzq();
+        Nodo*& getHijoIzq();
         void setHijoIzq(Nodo* hijoIzq);
-        Nodo* getHijoDer();
+        Nodo*& getHijoDer();
         void setHijoDer(Nodo* hijoDer);
         ~Nodo();    
 };
