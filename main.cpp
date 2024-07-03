@@ -62,6 +62,8 @@ void insertarNodoAvl(Nodo* raiz_avl, Transaccion* transaccion){
         insertarNodoAvl(raiz_avl->getHijoIzq(), transaccion);
     } else if (id > id_actual){
         insertarNodoAvl(raiz_avl->getHijoDer(), transaccion);
+    } else {
+        return;
     }
 }
 
