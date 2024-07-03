@@ -93,6 +93,16 @@ void insertarNodoAvl(Nodo* raiz_avl, Transaccion* transaccion){ //pendiente
     }
 }
 
+// este metodo muestra las opciones disponibles en el menu.
+void opciones(){
+    cout<<"\n----MENU----"<<endl;
+    cout<<"1) Realizar nueva transaccion"<<endl;
+    cout<<"2) Buscar transaccion por ID"<<endl;
+    cout<<"3) Definir criterios para transacciones sospechosas"<<endl;
+    cout<<"4) Generar informe de transacciones sospechosas"<<endl;
+    cout<<"5) Salir"<<endl;
+    cout<<"Ingresa una opción: ";
+}
 
 int main(){
     Nodo* raiz_avl = nullptr;
@@ -101,6 +111,33 @@ int main(){
     // cout<<raiz_abb_monto->getDato()->getMonto()<<endl;
     // cout<<raiz_abb_monto->getHijoIzq()->getDato()->getMonto()<<endl;
     // cout<<raiz_abb_monto->getHijoDer()->getDato()->getMonto()<<endl;
+
+    int opcion = 0;
+    while(opcion != 5){
+        opciones();
+        cin >> opcion;
+        switch (opcion)
+        {
+        case 1:
+            //realizarTransaccion()
+            break;
+        case 2:
+            //buscarTransaccionPorId()
+            break;
+        case 3:
+            //definirCriterios()
+            break;
+        case 4:
+            //generarInforme()
+            break;
+        case 5:
+            cout<<"Saliendo..."<<endl;
+            break;
+        default:
+            cout<<"Opcion invalida, intente nuevamente."<<endl;
+            break;
+        }
+    }
 
     return 0;
 }
