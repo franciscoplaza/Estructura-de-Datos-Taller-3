@@ -37,8 +37,11 @@ int altura(Nodo* nodo) {
 
 //este método devuelve el mayor entre 2 valores
 int max(int a, int b) {
-    if (a > b){return a;}
-    if (a < b){return b;}
+    if (a > b) {
+        return a;
+    } else {
+        return b;
+    }
 }
 
 //este método devuelve el factor de balance del nodo
@@ -161,6 +164,7 @@ void leerArchivoTransacciones(string nombre_archivo, Nodo*& raiz_avl, Nodo*& rai
                     cout<<hora<<endl;
                     Transaccion* transaccion = new Transaccion(id, cuenta_origen, cuenta_destino, monto, ubicacion, fecha, hora);
                     insertarNodoAbbMontos(raiz_abb_monto, transaccion);
+                    insertarNodoAvl(raiz_avl, transaccion);
                     break;
             }
             iterador++;
@@ -228,6 +232,7 @@ void realizarTransaccion(Nodo*& raiz_avl, Nodo*& raiz_abb_monto){
 
     Transaccion* transaccion = new Transaccion(id, cuenta_origen, cuenta_destino, monto, ubicacion, fecha, hora);
     insertarNodoAbbMontos(raiz_abb_monto, transaccion);
+    insertarNodoAvl(raiz_avl, transaccion);
 
     cout << "Transacción realizada con éxito. ID de la transacción: " << id << endl;
 }
@@ -247,9 +252,9 @@ int main(){
     Nodo* raiz_avl = nullptr;
     Nodo* raiz_abb_monto = nullptr;
     leerArchivoTransacciones("transacciones.txt", raiz_avl, raiz_abb_monto);
-    // cout<<raiz_abb_monto->getDato()->getMonto()<<endl;
-    // cout<<raiz_abb_monto->getHijoIzq()->getDato()->getMonto()<<endl;
-    // cout<<raiz_abb_monto->getHijoDer()->getDato()->getMonto()<<endl;
+    cout<<raiz_avl->getDato()->getMonto()<<endl;
+    cout<<raiz_avl->getHijoIzq()->getDato()->getMonto()<<endl;
+    cout<<raiz_avl->getHijoDer()->getDato()->getMonto()<<endl;
 
     int opcion = 0;
     while(opcion != 5){
