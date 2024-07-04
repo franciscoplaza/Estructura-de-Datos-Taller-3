@@ -93,6 +93,66 @@ void insertarNodoAvl(Nodo* raiz_avl, Transaccion* transaccion){ //pendiente
     }
 }
 
+//este método recorre todo el árbol y retorna el ID mayor encontrado
+int buscarIdMayor(Nodo* raiz) {
+    if (raiz == nullptr) {
+        return 0;
+    }
+
+    int id_mayor = raiz->getDato()->getId();
+    int id_izq = buscarIdMayor(raiz->getHijoIzq());
+    if (id_izq > id_mayor) {
+        id_mayor = id_izq;
+    }
+    int id_der = buscarIdMayor(raiz->getHijoDer());
+    if (id_der > id_mayor) {
+        id_mayor = id_der;
+    }
+
+    return id_mayor;
+}
+
+
+//este método pide datos para crear una transacción y la agrega al abb
+void realizarTransaccion(Nodo*& raiz_avl, Nodo*& raiz_abb_monto){
+    int id = buscarIdMayor(raiz_abb_monto) + 1;
+
+    string cuenta_origen;
+    cout<<"Ingrese la cuenta de origen: ";
+    cin>>cuenta_origen;
+
+    string cuenta_destino;
+    cout<<"Ingrese la cuenta de destino: ";
+    cin>>cuenta_destino;
+
+    int monto;
+    cout<<"Ingrese el monto a transferir: ";
+    cin>>monto;
+
+    while(monto <= 0){
+        cout<<"El monto de la transferencia debe ser mayor a 0. Intente nuevamente."<<endl;
+        cout<<"Ingrese el monto a transferir: ";
+        cin>>monto;
+    }
+
+    string ubicacion;
+    cout<<"Ingrese la ubicación de la transferencia: ";
+    cin>>ubicacion;
+
+    string fecha;
+    cout<<"Ingrese la fecha de la transferencia: ";
+    cin>>fecha;
+
+    string hora;
+    cout<<"Ingrese la hora de la transferencia: ";
+    cin>>hora;
+
+    Transaccion* transaccion = new Transaccion(id, cuenta_origen, cuenta_destino, monto, ubicacion, fecha, hora);
+    insertarNodoAbbMontos(raiz_abb_monto, transaccion);
+
+    cout << "Transacción realizada con éxito. ID de la transacción: " << id << endl;
+}
+
 // este metodo muestra las opciones disponibles en el menu.
 void opciones(){
     cout<<"\n----MENU----"<<endl;
@@ -119,7 +179,7 @@ int main(){
         switch (opcion)
         {
         case 1:
-            //realizarTransaccion()
+            realizarTransaccion(raiz_avl, raiz_abb_monto);
             break;
         case 2:
             //buscarTransaccionPorId()
