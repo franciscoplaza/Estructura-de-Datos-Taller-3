@@ -7,6 +7,7 @@ Nodo::Nodo(Transaccion* dato){
     this->dato = dato;
     this->hijoIzq = nullptr;
     this->hijoDer = nullptr;
+    this->altura = 1;
 }
 
 Transaccion* Nodo::getDato(){
@@ -31,6 +32,14 @@ Nodo*& Nodo::getHijoDer(){
 
 void Nodo::setHijoDer(Nodo* hijoDer){
     this->hijoDer = hijoDer;
+}
+
+int Nodo::getAltura() {
+    return altura;
+}
+
+void Nodo::setAltura(int altura) {
+    this->altura = altura;
 }
 
 Nodo::~Nodo(){};

@@ -8,6 +8,7 @@ class Nodo{
         Transaccion* dato;
         Nodo* hijoIzq;
         Nodo* hijoDer;
+        int altura;
 
     public:
         Nodo(Transaccion* dato);
@@ -17,5 +18,8 @@ class Nodo{
         void setHijoIzq(Nodo* hijoIzq);
         Nodo*& getHijoDer();
         void setHijoDer(Nodo* hijoDer);
+        int getAltura();
+        void setAltura(int altura);
+
         ~Nodo();    
 };

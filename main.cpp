@@ -5,6 +5,7 @@
 #include "Nodo.h"
 using namespace std;
 
+//este método inserta un nodo en el ABB ordenado por montos de la transaccion
 void insertarNodoAbbMontos(Nodo*& raiz_abb_monto, Transaccion* transaccion){
     //cout<<"Entro a insertar nodo abb"<<endl;
     if (raiz_abb_monto == nullptr){
@@ -23,6 +24,101 @@ void insertarNodoAbbMontos(Nodo*& raiz_abb_monto, Transaccion* transaccion){
         insertarNodoAbbMontos(raiz_abb_monto->getHijoDer(), transaccion);
     } else {
         return;
+    }
+}
+
+//este método devuelve la altura del nodo
+int altura(Nodo* nodo) {
+    if (nodo == nullptr) {
+        return 0;
+    }
+    return nodo->getAltura();
+}
+
+//este método devuelve el mayor entre 2 valores
+int max(int a, int b) {
+    if (a > b){return a;}
+    if (a < b){return b;}
+}
+
+//este método devuelve el factor de balance del nodo
+int obtenerBalance(Nodo* nodo) {
+    if (nodo == nullptr) {
+        return 0;
+    }
+    return altura(nodo->getHijoIzq()) - altura(nodo->getHijoDer());
+}
+
+//este método realiza una rotación a la derecha en el AVL
+void rotacionDerecha(Nodo*& y) {
+    Nodo* x = y->getHijoIzq();
+    Nodo* T2 = x->getHijoDer();
+
+    // Rotación
+    x->setHijoDer(y);
+    y->setHijoIzq(T2);
+
+    // Actualizar alturas
+    y->setAltura(max(altura(y->getHijoIzq()), altura(y->getHijoDer())) + 1);
+    x->setAltura(max(altura(x->getHijoIzq()), altura(x->getHijoDer())) + 1);
+
+    y = x;
+}
+
+//este método realiza una rotación a la izquierda en el AVL
+void rotacionIzquierda(Nodo*& x) {
+    Nodo* y = x->getHijoDer();
+    Nodo* T2 = y->getHijoIzq();
+
+    // Rotación
+    y->setHijoIzq(x);
+    x->setHijoDer(T2);
+
+    // Actualizar alturas
+    x->setAltura(max(altura(x->getHijoIzq()), altura(x->getHijoDer())) + 1);
+    y->setAltura(max(altura(y->getHijoIzq()), altura(y->getHijoDer())) + 1);
+
+    x = y;
+}
+
+//este método inserta un nodo en el AVL ordenado por IDs de la transaccion
+void insertarNodoAvl(Nodo*& raiz_avl, Transaccion* transaccion){
+    if (raiz_avl == nullptr){
+        raiz_avl = new Nodo(transaccion);
+        //cout<<"Se insertó nuevo Nodo"<<endl;
+        return;
+    }
+    Transaccion* transaccion_actual = raiz_avl->getDato();
+    int id_actual = transaccion_actual->getId();
+    int id = transaccion->getId();
+
+    if(id < id_actual){
+        insertarNodoAvl(raiz_avl->getHijoIzq(), transaccion);
+    } else if (id > id_actual){
+        insertarNodoAvl(raiz_avl->getHijoDer(), transaccion);
+    } else {
+        return;
+    }
+
+    raiz_avl->setAltura(1 + max(altura(raiz_avl->getHijoIzq()), altura(raiz_avl->getHijoDer())));
+    int balance = obtenerBalance(raiz_avl);
+
+    if (balance > 1 && id < raiz_avl->getHijoIzq()->getDato()->getId()) {
+        rotacionDerecha(raiz_avl);
+    }
+
+    if (balance < -1 && id > raiz_avl->getHijoDer()->getDato()->getId()) {
+        rotacionIzquierda(raiz_avl);
+    }
+
+    if (balance > 1 && id > raiz_avl->getHijoIzq()->getDato()->getId()) {
+        rotacionIzquierda(raiz_avl->getHijoIzq());
+        rotacionDerecha(raiz_avl);
+    }
+
+    if (balance < -1 && id < raiz_avl->getHijoDer()->getDato()->getId()) {
+        rotacionDerecha(raiz_avl->getHijoDer());
+        rotacionIzquierda(raiz_avl);
     }
 }
 
@@ -74,24 +170,7 @@ void leerArchivoTransacciones(string nombre_archivo, Nodo*& raiz_avl, Nodo*& rai
     }
 }
 
-void insertarNodoAvl(Nodo* raiz_avl, Transaccion* transaccion){ //pendiente
-    if (raiz_avl == nullptr){
-        raiz_avl = new Nodo(transaccion);
-        cout<<"Se insertó nuevo Nodo"<<endl;
-        return;
-    }
-    Transaccion* transaccion_actual = raiz_avl->getDato();
-    int id_actual = transaccion_actual->getId();
-    int id = transaccion->getId();
 
-    if(id < id_actual){
-        insertarNodoAvl(raiz_avl->getHijoIzq(), transaccion);
-    } else if (id > id_actual){
-        insertarNodoAvl(raiz_avl->getHijoDer(), transaccion);
-    } else {
-        return;
-    }
-}
 
 //este método recorre todo el árbol y retorna el ID mayor encontrado
 int buscarIdMayor(Nodo* raiz) {
