@@ -7,11 +7,8 @@ using namespace std;
 
 //este método inserta un nodo en el ABB ordenado por montos de la transaccion
 void insertarNodoAbbMontos(Nodo*& raiz_abb_monto, Transaccion* transaccion){
-    //cout<<"Entro a insertar nodo abb"<<endl;
     if (raiz_abb_monto == nullptr){
         raiz_abb_monto = new Nodo(transaccion);
-        //cout<<raiz_abb_monto<<endl;
-        //cout<<"Se creo el nodo"<<endl;
         return;
     }
     Transaccion* transaccion_actual = raiz_abb_monto->getDato();
@@ -84,7 +81,6 @@ void rotacionIzquierda(Nodo*& x) {
 void insertarNodoAvl(Nodo*& raiz_avl, Transaccion* transaccion){
     if (raiz_avl == nullptr){
         raiz_avl = new Nodo(transaccion);
-        //cout<<"Se insertó nuevo Nodo"<<endl;
         return;
     }
     Transaccion* transaccion_actual = raiz_avl->getDato();
@@ -121,7 +117,7 @@ void insertarNodoAvl(Nodo*& raiz_avl, Transaccion* transaccion){
     }
 }
 
-
+//este método lee el archivo de texto de transacciones e ingresa la transaccion a cada árbol (ABB y AVL)
 void leerArchivoTransacciones(string nombre_archivo, Nodo*& raiz_avl, Nodo*& raiz_abb_monto){
     int iterador;
     ifstream archivo(nombre_archivo.c_str());
@@ -130,7 +126,6 @@ void leerArchivoTransacciones(string nombre_archivo, Nodo*& raiz_avl, Nodo*& rai
 
     int id, monto;
     string cuenta_origen, cuenta_destino, ubicacion, fecha, hora;
-
 
     while(getline(archivo, linea)){
         stringstream input_stringstream(linea);
@@ -164,13 +159,9 @@ void leerArchivoTransacciones(string nombre_archivo, Nodo*& raiz_avl, Nodo*& rai
                     break;
             }
             iterador++;
-            
         }
-
     }
 }
-
-
 
 //este método recorre todo el árbol AVL y retorna el ID mayor encontrado
 int buscarIdMayor(Nodo* raiz) {
@@ -184,7 +175,6 @@ int buscarIdMayor(Nodo* raiz) {
     }
     return id_mayor;
 }
-
 
 //este método pide datos para crear una transacción y la agrega al abb
 void realizarTransaccion(Nodo*& raiz_avl, Nodo*& raiz_abb_monto){
@@ -227,6 +217,7 @@ void realizarTransaccion(Nodo*& raiz_avl, Nodo*& raiz_abb_monto){
     cout << "Transaccion realizada con éxito. ID de la transaccion: " << id << endl;
 }
 
+//este método se encarga de mostrar los datos de la transaccion pasada por parámetro
 void mostrarDatosTransaccion(Transaccion* transaccion){
     if (transaccion == nullptr){
         cout<<"\nNo se encuentra una transaccion con el ID ingresado."<<endl;
@@ -241,7 +232,7 @@ void mostrarDatosTransaccion(Transaccion* transaccion){
     }
 }
 
-
+//este método busca un id de transacción dentro del AVL
 void buscarTransaccionPorId(Nodo* raiz_avl) {
     int id;
     cout<<"Ingrese el ID de la transaccion que desea buscar:";
