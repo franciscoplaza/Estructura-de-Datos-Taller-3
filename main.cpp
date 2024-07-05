@@ -5,6 +5,29 @@
 #include "Nodo.h"
 using namespace std;
 
+//este método guarda las tansacciones dentro del txt de transacciones
+void guardarTransacciones(Nodo* raiz, ofstream& archivo) {
+    if (raiz == nullptr) {
+        return;
+    }
+
+    guardarTransacciones(raiz->getHijoIzq(), archivo);
+
+    Transaccion* transaccion = raiz->getDato();
+    archivo<<transaccion->getId()<<","<<transaccion->getCuentaOrigen()<<","<<transaccion->getCuentaDestino()<<","
+    <<transaccion->getMonto()<<","<<transaccion->getUbicacion()<<","<<transaccion->getFecha()<<","<<transaccion->getHora()
+    <<endl;
+
+    guardarTransacciones(raiz->getHijoDer(), archivo);
+}
+
+//este método actualiza el archivo txt de transacciones
+void actualizarArchivoTransacciones(string nombre_archivo, Nodo* raiz_avl) {
+    ofstream archivo(nombre_archivo.c_str());
+    guardarTransacciones(raiz_avl, archivo);
+    archivo.close();
+}
+
 //este método inserta un nodo en el ABB ordenado por montos de la transaccion
 void insertarNodoAbbMontos(Nodo*& raiz_abb_monto, Transaccion* transaccion){
     if (raiz_abb_monto == nullptr){
@@ -213,6 +236,7 @@ void realizarTransaccion(Nodo*& raiz_avl, Nodo*& raiz_abb_monto){
     Transaccion* transaccion = new Transaccion(id, cuenta_origen, cuenta_destino, monto, ubicacion, fecha, hora);
     insertarNodoAbbMontos(raiz_abb_monto, transaccion);
     insertarNodoAvl(raiz_avl, transaccion);
+    actualizarArchivoTransacciones("transacciones.txt", raiz_avl);
 
     cout << "Transaccion realizada con éxito. ID de la transaccion: " << id << endl;
 }
@@ -268,9 +292,6 @@ int main(){
     Nodo* raiz_avl = nullptr;
     Nodo* raiz_abb_monto = nullptr;
     leerArchivoTransacciones("transacciones.txt", raiz_avl, raiz_abb_monto);
-    // cout<<raiz_avl->getDato()->getMonto()<<endl;
-    // cout<<raiz_avl->getHijoIzq()->getDato()->getMonto()<<endl;
-    // cout<<raiz_avl->getHijoDer()->getDato()->getMonto()<<endl;
 
     int opcion = 0;
     while(opcion != 5){
