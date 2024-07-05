@@ -57,11 +57,9 @@ void rotacionDerecha(Nodo*& y) {
     Nodo* x = y->getHijoIzq();
     Nodo* T2 = x->getHijoDer();
 
-    // Rotación
     x->setHijoDer(y);
     y->setHijoIzq(T2);
 
-    // Actualizar alturas
     y->setAltura(max(altura(y->getHijoIzq()), altura(y->getHijoDer())) + 1);
     x->setAltura(max(altura(x->getHijoIzq()), altura(x->getHijoDer())) + 1);
 
@@ -73,11 +71,9 @@ void rotacionIzquierda(Nodo*& x) {
     Nodo* y = x->getHijoDer();
     Nodo* T2 = y->getHijoIzq();
 
-    // Rotación
     y->setHijoIzq(x);
     x->setHijoDer(T2);
 
-    // Actualizar alturas
     x->setAltura(max(altura(x->getHijoIzq()), altura(x->getHijoDer())) + 1);
     y->setAltura(max(altura(y->getHijoIzq()), altura(y->getHijoDer())) + 1);
 
@@ -161,7 +157,7 @@ void leerArchivoTransacciones(string nombre_archivo, Nodo*& raiz_avl, Nodo*& rai
                     break;
                 case 6:
                     hora = parte;
-                    cout<<hora<<endl;
+                    //cout<<hora<<endl;
                     Transaccion* transaccion = new Transaccion(id, cuenta_origen, cuenta_destino, monto, ubicacion, fecha, hora);
                     insertarNodoAbbMontos(raiz_abb_monto, transaccion);
                     insertarNodoAvl(raiz_avl, transaccion);
@@ -228,7 +224,42 @@ void realizarTransaccion(Nodo*& raiz_avl, Nodo*& raiz_abb_monto){
     insertarNodoAbbMontos(raiz_abb_monto, transaccion);
     insertarNodoAvl(raiz_avl, transaccion);
 
-    cout << "Transacción realizada con éxito. ID de la transacción: " << id << endl;
+    cout << "Transaccion realizada con éxito. ID de la transaccion: " << id << endl;
+}
+
+void mostrarDatosTransaccion(Transaccion* transaccion){
+    if (transaccion == nullptr){
+        cout<<"\nNo se encuentra una transaccion con el ID ingresado."<<endl;
+    } else {
+        cout<<"\nID transaccion: "<<transaccion->getId()<<endl;
+        cout<<"Cuenta de origen: "<<transaccion->getCuentaOrigen()<<endl;
+        cout<<"Cuenta de destino: "<<transaccion->getCuentaDestino()<<endl;
+        cout<<"Monto de la transaccion: "<<transaccion->getMonto()<<endl;
+        cout<<"Ubicacion: "<<transaccion->getUbicacion()<<endl;
+        cout<<"Fecha: "<<transaccion->getFecha()<<endl;
+        cout<<"Hora: "<<transaccion->getHora()<<endl;
+    }
+}
+
+
+void buscarTransaccionPorId(Nodo* raiz_avl) {
+    int id;
+    cout<<"Ingrese el ID de la transaccion que desea buscar:";
+    cin>>id;
+    Transaccion* resultado = nullptr;
+    while (raiz_avl != nullptr) {
+        int id_nodo = raiz_avl->getDato()->getId();
+        if (id < id_nodo) {
+            raiz_avl = raiz_avl->getHijoIzq();
+        } else if (id > id_nodo) {
+            raiz_avl = raiz_avl->getHijoDer();
+        } else {
+            resultado = raiz_avl->getDato();
+            break;
+        }
+    }
+
+    mostrarDatosTransaccion(resultado);
 }
 
 // este metodo muestra las opciones disponibles en el menu.
@@ -239,16 +270,16 @@ void opciones(){
     cout<<"3) Definir criterios para transacciones sospechosas"<<endl;
     cout<<"4) Generar informe de transacciones sospechosas"<<endl;
     cout<<"5) Salir"<<endl;
-    cout<<"Ingresa una opción: ";
+    cout<<"Ingresa una opcion: ";
 }
 
 int main(){
     Nodo* raiz_avl = nullptr;
     Nodo* raiz_abb_monto = nullptr;
     leerArchivoTransacciones("transacciones.txt", raiz_avl, raiz_abb_monto);
-    cout<<raiz_avl->getDato()->getMonto()<<endl;
-    cout<<raiz_avl->getHijoIzq()->getDato()->getMonto()<<endl;
-    cout<<raiz_avl->getHijoDer()->getDato()->getMonto()<<endl;
+    // cout<<raiz_avl->getDato()->getMonto()<<endl;
+    // cout<<raiz_avl->getHijoIzq()->getDato()->getMonto()<<endl;
+    // cout<<raiz_avl->getHijoDer()->getDato()->getMonto()<<endl;
 
     int opcion = 0;
     while(opcion != 5){
@@ -260,7 +291,7 @@ int main(){
             realizarTransaccion(raiz_avl, raiz_abb_monto);
             break;
         case 2:
-            //buscarTransaccionPorId()
+            buscarTransaccionPorId(raiz_avl);
             break;
         case 3:
             //definirCriterios()
