@@ -176,29 +176,23 @@ void leerArchivoTransacciones(string nombre_archivo, Nodo*& raiz_avl, Nodo*& rai
 
 
 
-//este método recorre todo el árbol y retorna el ID mayor encontrado
+//este método recorre todo el árbol AVL y retorna el ID mayor encontrado
 int buscarIdMayor(Nodo* raiz) {
     if (raiz == nullptr) {
         return 0;
     }
-
     int id_mayor = raiz->getDato()->getId();
-    int id_izq = buscarIdMayor(raiz->getHijoIzq());
-    if (id_izq > id_mayor) {
-        id_mayor = id_izq;
+    while (raiz->getHijoDer() != nullptr){
+        raiz = raiz->getHijoDer();
+        id_mayor = raiz->getDato()->getId();
     }
-    int id_der = buscarIdMayor(raiz->getHijoDer());
-    if (id_der > id_mayor) {
-        id_mayor = id_der;
-    }
-
     return id_mayor;
 }
 
 
 //este método pide datos para crear una transacción y la agrega al abb
 void realizarTransaccion(Nodo*& raiz_avl, Nodo*& raiz_abb_monto){
-    int id = buscarIdMayor(raiz_abb_monto) + 1;
+    int id = buscarIdMayor(raiz_avl) + 1;
 
     string cuenta_origen;
     cout<<"Ingrese la cuenta de origen: ";
