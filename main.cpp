@@ -278,6 +278,7 @@ void buscarTransaccionPorId(Nodo* raiz_avl) {
     mostrarDatosTransaccion(resultado);
 }
 
+//cambia el monto mínimo para designar una transaccion sospechosa
 void definirCriterios(int*& monto_minimo_sospechoso){
     cout<<"\nDefina el nuevo monto mínimo para que una transaccion sea considerada sospechosa: ";
     cin>>*monto_minimo_sospechoso;
