@@ -227,11 +227,11 @@ void realizarTransaccion(Nodo*& raiz_avl, Nodo*& raiz_abb_monto){
     cin>>ubicacion;
 
     string fecha;
-    cout<<"Ingrese la fecha de la transferencia: ";
+    cout<<"Ingrese la fecha de la transferencia (DD-MM-AAAA): ";
     cin>>fecha;
 
     string hora;
-    cout<<"Ingrese la hora de la transferencia: ";
+    cout<<"Ingrese la hora de la transferencia (HH:MM): ";
     cin>>hora;
 
     Transaccion* transaccion = new Transaccion(id, cuenta_origen, cuenta_destino, monto, ubicacion, fecha, hora);
@@ -326,13 +326,34 @@ void opciones(){
     cout<<"Ingresa una opcion: ";
 }
 
+// este metodo libera la memoria de las transacciones del árbol
+void liberarTransacciones(Nodo* nodo) {
+    if (nodo == nullptr) {
+        return;
+    }
+    //cout << "Liberando nodo con transacción ID: " << nodo->getDato()->getId() << endl;
+    liberarTransacciones(nodo->getHijoIzq());
+    liberarTransacciones(nodo->getHijoDer());
+    delete nodo->getDato();
+    nodo->setDato(nullptr);
+}
+
+// este metodo libera la memoria de los nodos de un árbol
+void liberarNodos(Nodo* nodo) {
+    if (nodo == nullptr) {
+        return;
+    }
+    liberarNodos(nodo->getHijoIzq());
+    liberarNodos(nodo->getHijoDer());
+    delete nodo;
+}
+
 int main(){
     Nodo* raiz_avl = nullptr;
     Nodo* raiz_abb_monto = nullptr;
     queue<Transaccion*> transacciones_sospechosas;
 
-    int* monto_minimo_sospechoso = new int();
-    *monto_minimo_sospechoso = 200000;
+    int* monto_minimo_sospechoso = new int(200000);
     leerArchivoTransacciones("transacciones.txt", raiz_avl, raiz_abb_monto);
 
     int opcion = 0;
@@ -355,6 +376,14 @@ int main(){
             break;
         case 5:
             cout<<"Saliendo..."<<endl;
+            cout<<"Liberando memoria transacciones..."<<endl;
+            liberarTransacciones(raiz_avl);
+            cout<<"Liberando memoria avl..."<<endl;
+            liberarNodos(raiz_avl);
+            cout<<"Liberando memoria abb_monto..."<<endl;
+            liberarNodos(raiz_abb_monto);
+            delete monto_minimo_sospechoso;
+            cout<<"Salida con éxito!"<<endl;
             break;
         default:
             cout<<"Opcion invalida, intente nuevamente."<<endl;
