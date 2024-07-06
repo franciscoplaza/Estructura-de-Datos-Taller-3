@@ -2,8 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <Queue>
-#include "Transaccion.h"
-#include "Nodo.h"
+#include "../Headers/Transaccion.h"
+#include "../Headers/Nodo.h"
 using namespace std;
 
 //este método guarda las tansacciones dentro del txt de transacciones
@@ -375,7 +375,7 @@ int main(){
             generarInforme(raiz_abb_monto, transacciones_sospechosas, monto_minimo_sospechoso);
             break;
         case 5:
-            cout<<"Saliendo..."<<endl;
+            cout<<"\nSaliendo..."<<endl;
             cout<<"Liberando memoria transacciones..."<<endl;
             liberarTransacciones(raiz_avl);
             cout<<"Liberando memoria avl..."<<endl;

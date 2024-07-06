@@ -1,7 +1,7 @@
 # Estructura-de-Datos-Taller-3
 
 # Para compilar
-g++ -o main.exe Transaccion.cpp Nodo.cpp main.cpp
+g++ -o main.exe CPPs/Transaccion.cpp  CPPs/Nodo.cpp CPPs/main.cpp -I Headers
 ./main.exe
 
 # INTEGRANTES

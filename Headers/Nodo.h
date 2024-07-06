@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "Transaccion.h"
+#include "../Headers/Transaccion.h"
 using namespace std;
 
 class Nodo{

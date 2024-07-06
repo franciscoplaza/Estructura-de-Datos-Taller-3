@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Transaccion.h"
+#include "../Headers/Transaccion.h"
 using namespace std;
 
 Transaccion::Transaccion(int id, string cuenta_origen, string cuenta_destino, int monto, string ubicacion, string fecha, string hora){

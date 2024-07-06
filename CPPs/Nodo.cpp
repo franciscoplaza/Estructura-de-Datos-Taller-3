@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Nodo.h"
-#include "Transaccion.h"
+#include "../Headers/Nodo.h"
+#include "../Headers/Transaccion.h"
 using namespace std;
 
 Nodo::Nodo(Transaccion* dato){
