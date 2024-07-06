@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <Queue>
 #include "Transaccion.h"
 #include "Nodo.h"
 using namespace std;
@@ -259,7 +260,7 @@ void mostrarDatosTransaccion(Transaccion* transaccion){
 //este método busca un id de transacción dentro del AVL
 void buscarTransaccionPorId(Nodo* raiz_avl) {
     int id;
-    cout<<"Ingrese el ID de la transaccion que desea buscar:";
+    cout<<"Ingrese el ID de la transaccion que desea buscar: ";
     cin>>id;
     Transaccion* resultado = nullptr;
     while (raiz_avl != nullptr) {
@@ -277,6 +278,42 @@ void buscarTransaccionPorId(Nodo* raiz_avl) {
     mostrarDatosTransaccion(resultado);
 }
 
+void definirCriterios(int*& monto_minimo_sospechoso){
+    cout<<"\nDefina el nuevo monto mínimo para que una transaccion sea considerada sospechosa: ";
+    cin>>*monto_minimo_sospechoso;
+}
+
+//este método ingresa a la cola las transacciones sospechosas por superar un monto establecido
+void llenarMontosSospechosos(Nodo* raiz_abb_monto, queue<Transaccion*>& transacciones_sospechosas, int* monto_minimo_sospechoso){
+    if (raiz_abb_monto != nullptr){
+        int monto_actual = raiz_abb_monto->getDato()->getMonto();
+        if (monto_actual >= *monto_minimo_sospechoso){
+            transacciones_sospechosas.push(raiz_abb_monto->getDato());
+        }
+        llenarMontosSospechosos(raiz_abb_monto->getHijoIzq(), transacciones_sospechosas, monto_minimo_sospechoso);
+        llenarMontosSospechosos(raiz_abb_monto->getHijoDer(), transacciones_sospechosas, monto_minimo_sospechoso);
+    }
+}
+
+//este método genera el informe con las transacciones sospechosas
+void generarInforme(Nodo* raiz_abb_monto, queue<Transaccion*>& transacciones_sospechosas, int* monto_minimo_sospechoso){
+    llenarMontosSospechosos(raiz_abb_monto, transacciones_sospechosas, monto_minimo_sospechoso);
+
+    cout<<"\n-----INFORME TRANSACCIONES SOSPECHOSAS-----"<<endl;
+    cout<<"\n Transacciones sospechosas por superar el monto de $"<<*monto_minimo_sospechoso<<endl;
+    if (transacciones_sospechosas.empty()){
+        cout<<"\nNo hay transacciones que superen el monto establecido"<<endl;
+    } else {
+        while (!transacciones_sospechosas.empty()){
+            Transaccion* t = transacciones_sospechosas.front();
+            transacciones_sospechosas.pop();
+            cout<<"\nID transaccion: "<<t->getId()<<" | Cuenta de origen: "<<t->getCuentaOrigen()<<" | Cuenta de destino: "<<t->getCuentaDestino()
+            <<" | Monto transferido: $"<<t->getMonto()<<endl;
+        }
+    }
+}
+
+
 // este metodo muestra las opciones disponibles en el menu
 void opciones(){
     cout<<"\n----MENU----"<<endl;
@@ -291,6 +328,10 @@ void opciones(){
 int main(){
     Nodo* raiz_avl = nullptr;
     Nodo* raiz_abb_monto = nullptr;
+    queue<Transaccion*> transacciones_sospechosas;
+
+    int* monto_minimo_sospechoso = new int();
+    *monto_minimo_sospechoso = 200000;
     leerArchivoTransacciones("transacciones.txt", raiz_avl, raiz_abb_monto);
 
     int opcion = 0;
@@ -306,10 +347,10 @@ int main(){
             buscarTransaccionPorId(raiz_avl);
             break;
         case 3:
-            //definirCriterios()
+            definirCriterios(monto_minimo_sospechoso);
             break;
         case 4:
-            //generarInforme()
+            generarInforme(raiz_abb_monto, transacciones_sospechosas, monto_minimo_sospechoso);
             break;
         case 5:
             cout<<"Saliendo..."<<endl;
