@@ -277,7 +277,7 @@ void buscarTransaccionPorId(Nodo* raiz_avl) {
     mostrarDatosTransaccion(resultado);
 }
 
-// este metodo muestra las opciones disponibles en el menu.
+// este metodo muestra las opciones disponibles en el menu
 void opciones(){
     cout<<"\n----MENU----"<<endl;
     cout<<"1) Realizar nueva transaccion"<<endl;
